@@ -1,0 +1,299 @@
+<html>
+<head>
+	<title>Summa oru game...</title>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script>
+		score = 0;
+		count = 0;
+		sSpeed = 100;
+		bSpeed = 1500;
+		mSpeed = 500;
+		startLoop = "";
+		blockLoop = "";
+		moveLoop = "";
+		checkLoop = "";
+		bgLoop = "";
+		bg = 1;
+		console.log(bg);
+		ht = window.innerHeight;
+		gameState = 0;
+		speedState = 0;
+		x=document.getElementById("hero");
+		pos=x.getBoundingClientRect();
+		
+		//bgLoop = setInterval(function(){ moveBg() }, 100);
+		//console.log(pos.top, pos.right, pos.bottom, pos.left);
+		
+		function startGame()
+		{	
+			
+			clearAll();
+			sSpeed = 100;
+			bSpeed = 1500;
+			mSpeed = 500;
+			gameState = 1;
+			speedState = 0;
+			count = 0;
+			score = 0;
+			document.getElementById("score").innerHTML = score;
+			document.getElementById("blockWrap").innerHTML = "";
+			$("#play").toggleClass("hidden");
+			startLoop = setInterval(function(){ movedown() }, sSpeed);
+			blockLoop = setInterval(function(){ addBlock() }, bSpeed);
+			moveLoop = setInterval(function(){ moveBlock() }, mSpeed);
+			checkLoop = setInterval(function(){ checkBlock() }, 50);
+			
+			bgLoop = setInterval(function(){moveBg()}, 10);
+			
+		
+		}
+		
+		function moveBg()
+		{
+			bg-=1;
+			console.log(bg);
+			document.getElementById("main").style.backgroundPosition= bg + 'px 0';
+		}
+		function moveup()
+		{
+			x=document.getElementById("hero");
+			pos=x.getBoundingClientRect();
+			//console.log(pos.top, pos.right, pos.bottom, pos.left);
+			cur = x.style.bottom;
+			cur = cur.replace("px","");
+			if(gameState==1)
+			{
+				if((parseInt(cur)+100)<ht)
+					x.style.bottom = parseInt(cur)+100;
+				else
+					gameOver();
+			}
+			//window.alert(cur);
+		}
+		function movedown()
+		{
+			//moveBg();
+			x=document.getElementById("hero");
+			
+			//console.log(pos.top, pos.right, pos.bottom, pos.left);
+			cur = x.style.bottom;
+			cur = cur.replace("px","");
+			if((parseInt(cur)-10)>0)
+				x.style.bottom = parseInt(cur)-20;
+			else
+			{
+				x.style.bottom = 0;
+				gameOver();
+			}
+			//window.alert(cur);
+		}
+		function gameOver()
+		{
+			gameState = 0;
+			//console.log("Over");
+			clearInterval(startLoop);
+			clearInterval(blockLoop);
+			clearInterval(moveLoop);
+			clearInterval(checkLoop);
+			clearInterval(bgLoop);
+			document.getElementById("finalScore").innerHTML=score;
+			$("#play").toggleClass("hidden");
+		}
+		
+		
+		function addBlock()
+		{
+			rand = Math.floor(Math.random() * (ht - 0 + 1)) + 0;
+			block = "<div class='block' style='right:0;bottom:"+rand+";'></div>";
+			$("#blockWrap").append(block);
+		}
+		function moveBlock()
+		{
+		
+			var elements = document.getElementsByClassName("block");
+			//console.log(elements);
+			var names = '';
+			for(var i=0; i<elements.length-1; i++) {
+				cur = elements[i].style.right;
+				cur = cur.replace("px","");
+				elements[i].style.right = parseInt(cur)+100;
+			}
+			if((count>15) && speedState == 0)
+			{
+				speedState = 1;
+				clearInterval(startLoop);
+				clearInterval(blockLoop);
+				clearInterval(moveLoop);
+				sSpeed = 50;
+				bSpeed = 750;
+				mSpeed = 300;
+				startLoop = setInterval(function(){ movedown() }, sSpeed);
+				blockLoop = setInterval(function(){ addBlock() }, bSpeed);
+				moveLoop = setInterval(function(){ moveBlock() }, mSpeed);
+			}
+			count++;
+			update();
+		}
+		
+		function clearAll()
+		{
+			var elements = document.getElementsByClassName("block");
+			
+			for(var i=0; i<elements.length; i++) {
+				elements[i].parentNode.removeChild(elements[i]);
+			
+			}
+			x=document.getElementById("hero");
+			x.style.bottom = "300px";
+			
+		}
+		
+		function update()
+		{
+			x=document.getElementById("hero");
+			pos=x.getBoundingClientRect();
+			var elements = document.getElementsByClassName("block");
+			
+			for(var i=0; i<elements.length-1; i++) {
+			
+				bPos=elements[i].getBoundingClientRect();
+				//console.log(pos.top, pos.right, pos.bottom, pos.left);
+				//elements[i].innerHTML=bPos.top;
+				
+				if(bPos.right<20)
+				{
+					score++;
+					elements[i].parentNode.removeChild(elements[i]);
+				}
+			}
+			
+			updateScore();
+
+		}
+		
+		function updateScore()
+		{
+			document.getElementById("score").innerHTML=score;
+		}
+		
+		function checkBlock()
+		{
+			x=document.getElementById("hero");
+			pos=x.getBoundingClientRect();
+			var elements = document.getElementsByClassName("block");
+			
+			for(var i=0; i<elements.length-1; i++) {
+			
+				bPos=elements[i].getBoundingClientRect();
+				//console.log(pos.top, pos.right, pos.bottom, pos.left);
+				//elements[i].innerHTML=bPos.top;
+				if(((bPos.bottom>pos.top) && (bPos.bottom<pos.bottom)) || ((bPos.top>pos.bottom) && (bPos.top<pos.top)) || ((pos.top<bPos.top) && (pos.bottom>bPos.top)) || ((pos.top>bPos.top) && (pos.bottom<bPos.bottom)))
+				{
+					if((bPos.left<pos.right)&&(bPos.left>pos.left))
+					{
+						gameOver();
+					}
+					if((bPos.right<pos.right)&&(bPos.right>pos.left))
+					{
+						gameOver();
+					}
+				}
+				
+			}
+			
+		}
+		
+	
+	</script>
+	<style>
+	
+		#main
+		{
+			background-image: url('bg.png');
+			background-repeat: repeat;
+			overflow:hidden;
+			font-family: "Impact",Verdana;
+		}
+		.block
+		{
+			width:100px;
+			height:100px;
+			position:absolute;
+			background:#c0392b;
+			
+			transition: all 0.5s linear;
+		}
+		
+		.score
+		{
+			height:50px;
+			width:100px;
+			position:fixed;
+			top:0;
+			right:20;
+			background:#34a6ff;
+			z-index:10000;
+			color:#fff;
+			line-height:50px;
+			text-align:center;
+			font-weight:500;
+			
+		}
+		
+		.hidden
+		{
+			display:none;
+		
+		}
+		
+		.play
+		{
+		background: rgba(0,0,0,0.75);
+		position:absolute;
+		width:100vw;
+		height:100vh;
+		overflow:hidden;
+		padding-top:30vh;
+		text-align:center;
+		}
+		
+		#finalScore
+		{
+			width:200px;
+			padding:50px;
+			background:#f9f9f9;
+			color:#333;
+			font-weight:600;
+			font-family:"Impact",Verdana;	
+			font-size:2em;
+		}
+		
+		button
+		{
+				background:#c0392b;
+				color:#fff;
+				font-weight:800;
+				font-size:2em;
+				outline:none;
+				border:0;
+				padding:25px;
+				margin:20px;
+				text-transform:uppercase;
+		}
+	</style>
+</head>
+<body onclick="moveup()" style="width:100vw;height:100vh;margin:0; padding:0;" id="main">
+	
+	<div id="hero" style="transition: all 0.25s linear;position:absolute;height:75px;width:75px;background:#3498db;left:25;bottom:300;"></div>
+	<div id="blockWrap"></div>
+	<div class="score" id="score">0</div>
+	<div class="play" id="play">
+		<center>
+		<div id="finalScore">--</div>
+		<button onclick="startGame()">Play</button>
+		</center>
+	</div>
+	
+
+</body>
+</html>
