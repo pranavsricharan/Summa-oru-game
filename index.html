@@ -3,6 +3,8 @@
 	<title>Summa oru game...</title>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script>
+		
+		//document.body.addEventListener('touchmove', moveup, false);
 		score = 0;
 		count = 0;
 		sSpeed = 100;
@@ -14,7 +16,7 @@
 		checkLoop = "";
 		bgLoop = "";
 		bg = 1;
-		console.log(bg);
+		//console.log(bg);
 		ht = window.innerHeight;
 		gameState = 0;
 		speedState = 0;
@@ -26,7 +28,7 @@
 		
 		function startGame()
 		{	
-			
+			document.getElementById("main").addEventListener('touchstart', function(){moveup()}, false);
 			clearAll();
 			sSpeed = 100;
 			bSpeed = 1500;
@@ -51,7 +53,7 @@
 		function moveBg()
 		{
 			bg-=1;
-			console.log(bg);
+			//console.log(bg);
 			document.getElementById("main").style.backgroundPosition= bg + 'px 0';
 		}
 		function moveup()
@@ -282,7 +284,7 @@
 		}
 	</style>
 </head>
-<body onclick="moveup()" style="width:100vw;height:100vh;margin:0; padding:0;" id="main">
+<body  style="width:100vw;height:100vh;margin:0; padding:0;" id="main">
 	
 	<div id="hero" style="transition: all 0.25s linear;position:absolute;height:8vh;width:8vh;background:#3498db;left:25;bottom:20vh;"></div>
 	<div id="blockWrap"></div>
