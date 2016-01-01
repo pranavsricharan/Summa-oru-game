@@ -60,11 +60,11 @@
 			pos=x.getBoundingClientRect();
 			//console.log(pos.top, pos.right, pos.bottom, pos.left);
 			cur = x.style.bottom;
-			cur = cur.replace("px","");
+			cur = cur.replace("vh","");
 			if(gameState==1)
 			{
-				if((parseInt(cur)+50)<ht)
-					x.style.bottom = parseInt(cur)+50;
+				if((parseInt(cur)+10)<100)
+					x.style.bottom = (parseInt(cur)+10)+'vh';
 				else
 					gameOver();
 			}
@@ -77,9 +77,9 @@
 			
 			//console.log(pos.top, pos.right, pos.bottom, pos.left);
 			cur = x.style.bottom;
-			cur = cur.replace("px","");
-			if((parseInt(cur)-10)>0)
-				x.style.bottom = parseInt(cur)-20;
+			cur = cur.replace("vh","");
+			if((parseInt(cur)-2)>0)
+				x.style.bottom = (parseInt(cur)-3)+'vh';
 			else
 			{
 				x.style.bottom = 0;
@@ -144,7 +144,7 @@
 			
 			}
 			x=document.getElementById("hero");
-			x.style.bottom = "300px";
+			x.style.bottom = "20vh";
 			
 		}
 		
@@ -284,7 +284,7 @@
 </head>
 <body onclick="moveup()" style="width:100vw;height:100vh;margin:0; padding:0;" id="main">
 	
-	<div id="hero" style="transition: all 0.25s linear;position:absolute;height:75px;width:75px;background:#3498db;left:25;bottom:70;"></div>
+	<div id="hero" style="transition: all 0.25s linear;position:absolute;height:75px;width:75px;background:#3498db;left:25;bottom:20vh;"></div>
 	<div id="blockWrap"></div>
 	<div class="score" id="score">0</div>
 	<div class="play" id="play">
