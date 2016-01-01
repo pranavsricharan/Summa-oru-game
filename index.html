@@ -78,7 +78,7 @@
 			//console.log(pos.top, pos.right, pos.bottom, pos.left);
 			cur = x.style.bottom;
 			cur = cur.replace("vh","");
-			if((parseInt(cur)-2)>0)
+			if((parseInt(cur))>0)
 				x.style.bottom = (parseInt(cur)-3)+'vh';
 			else
 			{
@@ -126,7 +126,7 @@
 				clearInterval(moveLoop);
 				sSpeed = 50;
 				bSpeed = 750;
-				mSpeed = 300;
+				mSpeed = 200;
 				startLoop = setInterval(function(){ movedown() }, sSpeed);
 				blockLoop = setInterval(function(){ addBlock() }, bSpeed);
 				moveLoop = setInterval(function(){ moveBlock() }, mSpeed);
@@ -284,7 +284,7 @@
 </head>
 <body onclick="moveup()" style="width:100vw;height:100vh;margin:0; padding:0;" id="main">
 	
-	<div id="hero" style="transition: all 0.25s linear;position:absolute;height:75px;width:75px;background:#3498db;left:25;bottom:20vh;"></div>
+	<div id="hero" style="transition: all 0.25s linear;position:absolute;height:8vh;width:8vh;background:#3498db;left:25;bottom:20vh;"></div>
 	<div id="blockWrap"></div>
 	<div class="score" id="score">0</div>
 	<div class="play" id="play">
